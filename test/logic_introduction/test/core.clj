@@ -5,10 +5,31 @@
             [logic-introduction.core]))
 
 (test/deftest first-type-test
+
   (test/is (= '(_0)
               (run* [q]
                     (typedo [ ['f :- [Integer :> Integer] ] ;; 'f is of type Integer -> Integer
                               ['g :- Integer] ;; 'g is of type Integer
+                              ] 
+                            [:apply 'f 'g] ;; Determine the resulting type of ('f 'g) ..
+                            Integer) ;;  and succeed if it is Integer
+                    )))
+
+  ;; Expect no solution to the following:
+  (test/is (= '()
+              (run* [q]
+                    (typedo [ ['f :- [Float :> Integer] ] ;; 'f is of type Float -> Integer
+                              ['g :- Integer] ;; 'g is of type Integer
+                              ] 
+                            [:apply 'f 'g] ;; Determine the resulting type of ('f 'g) ..
+                            Integer) ;;  and succeed if it is Integer
+                    )))
+
+  ;; But, if we change g to be of type Float, all will be well:
+  (test/is (= '(_0)
+              (run* [q]
+                    (typedo [ ['f :- [Float :> Integer] ] ;; 'f is of type Float -> Integer
+                              ['g :- Float] ;; 'g is of type Integer
                               ] 
                             [:apply 'f 'g] ;; Determine the resulting type of ('f 'g) ..
                             Integer) ;;  and succeed if it is Integer
