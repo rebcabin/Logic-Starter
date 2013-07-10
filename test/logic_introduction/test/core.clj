@@ -46,6 +46,13 @@
                             Float)
                     )))
 
-  
+  (test/is (= '(_0)
+              (run* [q]
+                    (typedo [ ['max :- [Integer :> [Integer :> Integer]]]
+                              ['a :- Integer]
+                              ['b :- Integer]
+                              ]
+                            [:apply [:apply 'max 'a] 'b]
+                            Integer))))
   )
 
