@@ -29,9 +29,23 @@
   (test/is (= '(_0)
               (run* [q]
                     (typedo [ ['f :- [Float :> Integer] ] ;; 'f is of type Float -> Integer
-                              ['g :- Float] ;; 'g is of type Integer
+                              ['g :- Float] ;; 'g is of type Float
                               ] 
                             [:apply 'f 'g] ;; Determine the resulting type of ('f 'g) ..
                             Integer) ;;  and succeed if it is Integer
-                    ))))
+                    )))
+
+  ;; Adding another function to the flow also type-checks:
+  (test/is (= '(_0)
+              (run* [q]
+                    (typedo [ ['f :- [Float :> Integer] ]
+                              ['g :- Float]
+                              ['h :- [Integer :> Float]]
+                              ] 
+                            [:apply 'h [:apply 'f 'g]] 
+                            Float)
+                    )))
+
+  
+  )
 
