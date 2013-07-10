@@ -54,5 +54,12 @@
                               ]
                             [:apply [:apply 'max 'a] 'b]
                             Integer))))
-  )
+  (test/is (= '(_0)
+              (run* [q]
+                    (typedo [ ['and :- [Boolean :> [Boolean :> Boolean]]]
+                              ['a :- Boolean]
+                              ['b :- Boolean]
+                              ]
+                            [:apply [:apply 'and 'a] 'b]
+                            Boolean))))  )
 
